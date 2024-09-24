@@ -177,21 +177,21 @@ void set_mcdi_idle_state(int cpu, int state)
 	mcdi_prof_set_idle_state(cpu, state);
 }
 
-int get_cluster_off_token(cpu)
+int get_cluster_off_token(int cpu)
 {
-	unsigned long flags;
-	int cluster;
-	int token;
+    unsigned long flags;
+    int cluster;
+    int token;
 
-	spin_lock_irqsave(&mcdi_gov_spin_lock, flags);
+    spin_lock_irqsave(&mcdi_gov_spin_lock, flags);
 
-	cluster = cluster_idx_get(cpu);
-	token = core_cluster_off_token[cluster];
-	core_cluster_off_token[cluster] = -1;
+    cluster = cluster_idx_get(cpu);
+    token = core_cluster_off_token[cluster];
+    core_cluster_off_token[cluster] = -1;
 
-	spin_unlock_irqrestore(&mcdi_gov_spin_lock, flags);
+    spin_unlock_irqrestore(&mcdi_gov_spin_lock, flags);
 
-	return token;
+    return token;
 }
 
 static enum hrtimer_restart mcdi_hrtimer_func(struct hrtimer *timer)
